@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, abort
 from model import User, db
 import bcrypt
 
@@ -22,10 +22,32 @@ def register():
 		session["is_login"] = True
 		session["nama"] = nama
 		return redirect(url_for('dashboard'))
-	return render_template("register.html")	
+	return render_template("register.html")
+
+@app.route('/login',methods=['GET', 'POST'])
+def login():
+	if request.method == 'POST':
+		email = request.form['email'].encode('utf-8')
+		password = request.form['password'].encode('utf-8')
+
+		user_exist = User.query.filter_by(email=email).first()
+
+		if user_exist is not None:
+			if user_exist.password.encode('utf-8') == bcrypt.hashpw(password, user_exist.password.encode('utf-8')):
+				session["is_login"] = True
+				session["nama"] = user_exist.name
+				return redirect(url_for('dashboard'))
+			else:
+				return "password salah"
+			return "user ga ada"
+		return "username dan password salah"				
+
+	return render_template('login.html')		
 
 @app.route("/dashboard")
 def dashboard():
+	if not session.get("nama"):
+		return redirect(url_for('login'))
 	return render_template("dashboard.html",user=session["nama"]) 	
 
 @app.route("/logout")

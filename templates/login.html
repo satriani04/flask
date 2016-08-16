@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="col-lg-6 col-offset-4">
+	<form action="/login" class="form-horizontal" method="POST">
+		<div class="form-group">
+			<label for="">Email</label>
+			<input type="text" name="email" class="form-control" placeholder="email anda">
+		</div>
+		<div class="form-group">
+			<label for="">Password</label>
+			<input type="password" name="password" class="form-control" placeholder="password anda">
+		</div>
+		<div class="form-group">
+			<button type="submit" class="btn btn-info pull-right">Login</button>
+		</div>	
+	</form>
+</div>
+{% endblock %}
