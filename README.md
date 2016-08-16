@@ -2,8 +2,8 @@
 
 ## how to use
 
-'''bash
+```bash
 virtualenv blogenv
 pip install -r requirements.txt
 python app.py
-'''
+```
